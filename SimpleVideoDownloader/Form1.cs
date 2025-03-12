@@ -16,7 +16,8 @@ namespace SimpleVideoDownloader
         private void btnDownload_Click(object sender, EventArgs e)
         {
             using HttpClient httpClient = new();
-            byte[] videoContent = httpClient.GetByteArrayAsync(txt_videoUrls.Lines[0]);
+            byte[] videoContent = httpClient.GetByteArrayAsync(txt_videoUrls.Lines[0]).Result;
+            File.WriteAllBytes("../../video.mp4", videoContent);
         }
     }
 }
