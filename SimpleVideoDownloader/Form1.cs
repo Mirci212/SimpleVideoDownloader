@@ -13,17 +13,13 @@ namespace SimpleVideoDownloader
             #endif
         }
 
-        private void btnDownload_Click(object sender, EventArgs e)
+        private async void btnDownload_Click(object sender, EventArgs e)
         {
             lbl_status.Text = "Video wird heruntergeladen";
             HttpClient httpClient = new();
-            Task<byte[]> downloadTask = httpClient.GetByteArrayAsync(txt_videoUrls.Lines[0]);
-            downloadTask.ContinueWith(task =>
-            {
-                File.WriteAllBytes("../../../video.mp4", task.Result);
-                lbl_status.Text = "Video wurde heruntergeladen.";
-            });
-            
+            byte[] videoContent = await httpClient.GetByteArrayAsync(txt_videoUrls.Lines[0]);
+            await Task.Run(() => File.WriteAllBytesAsync("../../../video.mp4", videoContent));
+            lbl_status.Text = "Video wurde heruntergeladen.";
         }
     }
 }
